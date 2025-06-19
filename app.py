@@ -895,38 +895,43 @@ texts = [
 
 "Congratulations! You’ve unlocked an exclusive offer. Confirm your details to get started.",
 
-... "You’ve earned a special reward for your loyalty! Confirm your email to receive it.",
-... 
-... "Your account has been upgraded! Confirm your details to activate your new features.",
-... 
-... "You’ve won a $500 voucher! Confirm your details to redeem it before it expires.",
-... 
-... ] 
-... 
-... labels = [1]*250 + [0]*250  
-... 
-... # ==== Train the model ====
-... vectorizer = TfidfVectorizer()
-... X = vectorizer.fit_transform(texts)
-... y = labels
-... 
-... model = LogisticRegression()
-... model.fit(X, y)
-... 
-... # ==== Streamlit UI ====
-... st.set_page_config(page_title="Scam Detector AI", layout="centered")
-... st.title("🕵️ Scam Message Detector")
-... st.markdown("Enter a message below to detect whether it may be a **scam** or **not**.")
-... 
-... msg = st.text_area("📩 Message content", height=150)
-... 
-... if st.button("Analyze"):
-...     if msg.strip():
-...         vec = vectorizer.transform([msg])
-...         pred = model.predict(vec)[0]
-...         prob = model.predict_proba(vec)[0]
-...         label = "🚨 **SCAM**" if pred == 1 else "✅ **Not Scam**"
-...         st.markdown(f"### Result: {label}")
-...         st.markdown(f"**Confidence:** {max(prob)*100:.2f}%")
-...     else:
-...         st.warning("Please enter a message to analyze.")
+"You’ve earned a special reward for your loyalty! Confirm your email to receive it.",
+
+ "Your account has been upgraded! Confirm your details to activate your new features.",
+
+"You’ve won a $500 voucher! Confirm your details to redeem it before it expires.",
+
+] 
+ 
+labels = [1]*250 + [0]*250  
+ 
+# ==== Train the model ====
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(texts)
+y = labels
+
+model = LogisticRegression()
+model.fit(X, y)
+
+# ==== Streamlit UI ====
+st.set_page_config(page_title="Scam Detector AI", layout="centered")
+st.title("🕵️ Scam Message Detector")
+st.markdown("Enter a message below to detect whether it may be a **scam** or **not**.")
+
+msg = st.text_area("📩 Message content", height=150)
+
+if st.button("Analyze"):
+    if msg.strip():
+        vec = vectorizer.transform([msg])
+        pred = model.predict(vec)[0]
+        prob = model.predict_proba(vec)[0]
+        label = "🚨 **SCAM**" if pred == 1 else "✅ **Not Scam**"
+        st.markdown(f"### Result: {label}")
+        st.markdown(f"**Confidence:** {max(prob)*100:.2f}%")
+    else:
+        st.warning("Please enter a message to analyze.")
+         label = "🚨 **SCAM**" if pred == 1 else "✅ **Not Scam**"
+         st.markdown(f"### Result: {label}")
+         st.markdown(f"**Confidence:** {max(prob)*100:.2f}%")
+     else:
+         st.warning("Please enter a message to analyze.")
