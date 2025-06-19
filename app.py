@@ -930,8 +930,3 @@ if st.button("Analyze"):
         st.markdown(f"**Confidence:** {max(prob)*100:.2f}%")
     else:
         st.warning("Please enter a message to analyze.")
-         label = "🚨 **SCAM**" if pred == 1 else "✅ **Not Scam**"
-         st.markdown(f"### Result: {label}")
-         st.markdown(f"**Confidence:** {max(prob)*100:.2f}%")
-     else:
-         st.warning("Please enter a message to analyze.")
