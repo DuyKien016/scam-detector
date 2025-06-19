@@ -1,7 +1,7 @@
 import streamlit as st
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-
+import time
 texts = [
     "Urgent: Your account has been compromised! Click here to secure your funds immediately!",
 
@@ -905,28 +905,62 @@ texts = [
  
 labels = [1]*250 + [0]*250  
  
-# ==== Train the model ====
+# ========== Model Training ==========
 vectorizer = TfidfVectorizer()
 X = vectorizer.fit_transform(texts)
 y = labels
-
 model = LogisticRegression()
 model.fit(X, y)
 
-# ==== Streamlit UI ====
-st.set_page_config(page_title="Scam Detector AI", layout="centered")
-st.title("🕵️ Scam Message Detector")
-st.markdown("Enter a message below to detect whether it may be a **scam** or **not**.")
+# ========== UI Config ==========
+st.set_page_config(page_title="Scam Detector AI", page_icon="🛡️", layout="centered")
 
-msg = st.text_area("📩 Message content", height=150)
+# ========== Custom CSS ========== #
+st.markdown("""
+    <style>
+    body {
+        background-color: #F0F8FF;
+    }
+    .main {
+        background-color: #FFFFFF;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-if st.button("Analyze"):
+# ========== Header ========== #
+st.markdown("""
+    <div style='text-align:center'>
+        <h1 style='color:#1E90FF;'>🛡️ Scam Detector AI</h1>
+        <p style='color:#333;'>Enter a message to find out if it's potentially a <b style='color:red;'>scam</b>.</p>
+    </div>
+""", unsafe_allow_html=True)
+
+# ========== User Input ========== #
+msg = st.text_area("📩 Message content:", height=150, help="Paste the suspicious message here")
+
+if st.button("🔍 Analyze"):
     if msg.strip():
-        vec = vectorizer.transform([msg])
-        pred = model.predict(vec)[0]
-        prob = model.predict_proba(vec)[0]
-        label = "🚨 **SCAM**" if pred == 1 else "✅ **Not Scam**"
-        st.markdown(f"### Result: {label}")
-        st.markdown(f"**Confidence:** {max(prob)*100:.2f}%")
+        with st.spinner("Analyzing message..."):
+            time.sleep(1)
+            vec = vectorizer.transform([msg])
+            pred = model.predict(vec)[0]
+            prob = model.predict_proba(vec)[0]
+
+        label = "🚨 <span style='color:red;'>SCAM</span>" if pred == 1 else "✅ <span style='color:green;'>Not Scam</span>"
+        confidence = max(prob) * 100
+
+        st.markdown(f"### Result: {label}", unsafe_allow_html=True)
+        st.markdown(f"**Confidence:** {confidence:.2f}%")
     else:
         st.warning("Please enter a message to analyze.")
+
+# ========== Footer ========== #
+st.markdown("""
+    <hr>
+    <div style='text-align:center; color:gray;'>
+        Built with 💙 by Team 3 | Powered by Streamlit & scikit-learn
+    </div>
+""", unsafe_allow_html=True)
