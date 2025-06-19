@@ -963,6 +963,6 @@ if st.button("🔍 Analyze"):
 st.markdown("""
     <hr>
     <div style='text-align:center; color:gray;'>
-        Built with 💙 by Team KIEN | Powered by Streamlit & scikit-learn
+        Built with 💙 by Team 3 | Powered by Streamlit & scikit-learn
     </div>
 """, unsafe_allow_html=True)
