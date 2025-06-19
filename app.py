@@ -903,8 +903,6 @@ texts = [
 
 ] 
  
-labels = [1]*250 + [0]*250  
- 
 # ========== Model Training ==========
 vectorizer = TfidfVectorizer()
 X = vectorizer.fit_transform(texts)
@@ -920,12 +918,15 @@ st.markdown("""
     <style>
     body {
         background-color: #F0F8FF;
+        background-image: linear-gradient(135deg, #D0E8F2 0%, #FFFFFF 100%);
+        background-attachment: fixed;
+        background-size: cover;
     }
     .main {
-        background-color: #FFFFFF;
+        background-color: rgba(255, 255, 255, 0.95);
         border-radius: 15px;
         padding: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
     </style>
 """, unsafe_allow_html=True)
@@ -961,6 +962,6 @@ if st.button("🔍 Analyze"):
 st.markdown("""
     <hr>
     <div style='text-align:center; color:gray;'>
-        Built with 💙 by Team 3 | Powered by Streamlit & scikit-learn
+        Built with 💙 by Team KIEN | Powered by Streamlit & scikit-learn
     </div>
 """, unsafe_allow_html=True)
