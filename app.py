@@ -902,6 +902,7 @@ texts = [
 "You’ve won a $500 voucher! Confirm your details to redeem it before it expires.",
 
 ] 
+labels = [1]*250 + [0]*250 
  
 # ========== Model Training ==========
 vectorizer = TfidfVectorizer()
