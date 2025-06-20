@@ -2,6 +2,16 @@ import streamlit as st
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 import time
+# ========== CONFIG & STYLE ==========
+st.set_page_config(page_title="Scam Detector AI", layout="centered", initial_sidebar_state="collapsed")
+st.markdown("""
+    <style>
+    body {
+        color: black;
+        background-color: white;
+    }
+    </style>
+""", unsafe_allow_html=True)
 texts = [
 "what supp yo, our organization has a free 1 week tour to Cambodia do you wanna join with us ???",
 "i have infinite robux, want some bro?",
