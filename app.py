@@ -3,7 +3,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 import time
 texts = [
-    "Urgent: Your account has been compromised! Click here to secure your funds immediately!",
+"what supp yo, our organization has a free 1 week tour to Cambodia do you wanna join with us ???",
+"i have infinite robux, want some bro?",
+"Dude, my account has no money, can you help me some?",
+"Urgent: Your account has been compromised! Click here to secure your funds immediately!",
 
 "Congratulations! You've won a $5,000 cash prize! To claim it, just provide your bank details.",
 
@@ -897,12 +900,14 @@ texts = [
 
 "You’ve earned a special reward for your loyalty! Confirm your email to receive it.",
 
- "Your account has been upgraded! Confirm your details to activate your new features.",
+"Your account has been upgraded! Confirm your details to activate your new features.",
 
 "You’ve won a $500 voucher! Confirm your details to redeem it before it expires.",
-
+"Hi John, just a reminder that your dental appointment is scheduled for Tuesday at 3 PM.",
+"Attached is the invoice for last month’s project. Let me know if you have any questions!",
+"Don’t forget our meeting tomorrow at 10 AM. Here’s the Zoom link: [link]",
 ] 
-labels = [1]*250 + [0]*250 
+labels = [1]*253 + [0]*253 
  
 # ========== Train Model ==========
 vectorizer = TfidfVectorizer()
