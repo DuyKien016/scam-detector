@@ -904,65 +904,71 @@ texts = [
 ] 
 labels = [1]*250 + [0]*250 
  
-# ========== Model Training ==========
+# ========== Train Model ==========
 vectorizer = TfidfVectorizer()
 X = vectorizer.fit_transform(texts)
 y = labels
 model = LogisticRegression()
 model.fit(X, y)
 
-# ========== UI Config ==========
-st.set_page_config(page_title="Scam Detector AI", page_icon="🛡️", layout="centered")
+# ========== Streamlit Config ==========
+st.set_page_config(page_title="Scam Detector Chat", page_icon="💬", layout="centered")
 
-# ========== Custom CSS ========== #
+# ========== Session State ==========
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+# ========== Custom CSS (Chat Style) ==========
 st.markdown("""
     <style>
-    body {
-        background-color: #F0F8FF;
-        background-image: linear-gradient(135deg, #D0E8F2 0%, #FFFFFF 100%);
-        background-attachment: fixed;
-        background-size: cover;
-    }
-    .main {
-        background-color: rgba(255, 255, 255, 0.95);
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
+        .chat-bubble {
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            max-width: 80%;
+        }
+        .user {
+            background-color: #DCF8C6;
+            margin-left: auto;
+            text-align: right;
+        }
+        .bot {
+            background-color: #F1F0F0;
+            margin-right: auto;
+            text-align: left;
+        }
     </style>
 """, unsafe_allow_html=True)
 
-# ========== Header ========== #
-st.markdown("""
-    <div style='text-align:center'>
-        <h1 style='color:#1E90FF;'>🛡️ Scam Detector AI</h1>
-        <p style='color:#333;'>Enter a message to find out if it's potentially a <b style='color:red;'>scam</b>.</p>
-    </div>
-""", unsafe_allow_html=True)
+# ========== Chat Interface ==========
+st.title("💬 Scam Detector AI")
+st.caption("Type a message and I'll tell you if it's a scam!")
 
-# ========== User Input ========== #
-msg = st.text_area("📩 Message content:", height=150, help="Paste the suspicious message here")
+with st.form("chat_form", clear_on_submit=True):
+    user_input = st.text_input("You:", label_visibility="collapsed")
+    submitted = st.form_submit_button("Send")
 
-if st.button("🔍 Analyze"):
-    if msg.strip():
-        with st.spinner("Analyzing message..."):
-            time.sleep(1)
-            vec = vectorizer.transform([msg])
-            pred = model.predict(vec)[0]
-            prob = model.predict_proba(vec)[0]
+if submitted and user_input.strip():
+    # Add user message to chat history
+    st.session_state.chat_history.append(("user", user_input))
+    
+    # Simulate thinking...
+    with st.spinner("Analyzing..."):
+        time.sleep(1)
+        vec = vectorizer.transform([user_input])
+        pred = model.predict(vec)[0]
+        prob = model.predict_proba(vec)[0]
+        label = "🚨 SCAM" if pred == 1 else "✅ Not Scam"
+        confidence = f"{max(prob)*100:.2f}%"
 
-        label = "🚨 <span style='color:red;'>SCAM</span>" if pred == 1 else "✅ <span style='color:green;'>Not Scam</span>"
-        confidence = max(prob) * 100
+    # Compose bot message
+    bot_msg = f"**Result**: {label}\n\n**Confidence**: {confidence}"
+    st.session_state.chat_history.append(("bot", bot_msg))
 
-        st.markdown(f"### Result: {label}", unsafe_allow_html=True)
-        st.markdown(f"**Confidence:** {confidence:.2f}%")
-    else:
-        st.warning("Please enter a message to analyze.")
+# ========== Display Chat Bubbles ==========
+for sender, msg in st.session_state.chat_history:
+    bubble_class = "user" if sender == "user" else "bot"
+    st.markdown(f"<div class='chat-bubble {bubble_class}'>{msg}</div>", unsafe_allow_html=True)
 
-# ========== Footer ========== #
-st.markdown("""
-    <hr>
-    <div style='text-align:center; color:gray;'>
-        Built with 💙 by Team 3 | Powered by Streamlit & scikit-learn
-    </div>
-""", unsafe_allow_html=True)
+# ========== Footer ==========
+st.markdown("""<hr><center style='color:gray'>Built with ❤️ using Streamlit</center>""", unsafe_allow_html=True)
