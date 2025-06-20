@@ -965,10 +965,10 @@ if submitted and user_input.strip():
     bot_msg = f"**Result**: {label}\n\n**Confidence**: {confidence}"
     st.session_state.chat_history.append(("bot", bot_msg))
 
-# ========== Display Chat Bubbles ==========
-for sender, msg in st.session_state.chat_history:
+# ========== Display Chat Bubbles (Newest First) ==========
+for sender, msg in reversed(st.session_state.chat_history):
     bubble_class = "user" if sender == "user" else "bot"
     st.markdown(f"<div class='chat-bubble {bubble_class}'>{msg}</div>", unsafe_allow_html=True)
 
 # ========== Footer ==========
-st.markdown("""<hr><center style='color:gray'>Built with ❤️ using Streamlit</center>""", unsafe_allow_html=True)
+st.markdown("""<hr><center style='color:gray'>Built by Team 3 with ❤️ using Streamlit</center>""", unsafe_allow_html=True)
